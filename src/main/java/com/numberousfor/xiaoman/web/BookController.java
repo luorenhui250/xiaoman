@@ -3,6 +3,8 @@ package com.numberousfor.xiaoman.web;
 import com.numberousfor.xiaoman.bo.BookInfo;
 import com.numberousfor.xiaoman.bo.BookList;
 import com.numberousfor.xiaoman.bo.Books;
+import com.numberousfor.xiaoman.config.enums.ErrorEnum;
+import com.numberousfor.xiaoman.config.exception.PendingException;
 import com.numberousfor.xiaoman.service.BookService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +32,11 @@ public class BookController {
      */
     @GetMapping(value = "/search.do")
     @ResponseBody
-    public List<Books> getBooks(@RequestParam(value = "bookName") String bookName) {
+    public List<Books> getBooks(@RequestParam(value = "bookName") String bookName) throws PendingException {
         if (StringUtils.isBlank(bookName)) {
+            throw new PendingException(ErrorEnum.SEARCH_BOOK_NAME_IS_BLANK);
         }
-        List<Books> list = bookService.search(bookName);
-        return list;
+        return bookService.search(bookName);
     }
 
     /**

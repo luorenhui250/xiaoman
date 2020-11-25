@@ -73,7 +73,7 @@ public class Doc2Bean {
         List<BookList> bookLists = new ArrayList<>();
         Element list = document.getElementById("list");
         Elements dds = list.select("dd").select("a");
-        Set<Map<String, String>> objects = new HashSet<>();
+        List<Map<String, String>> objects = new ArrayList<>();
         for (Element e : dds) {
             Map<String, String> urlMap = new HashMap<>();
             String href = e.attr("href");
@@ -83,17 +83,16 @@ public class Doc2Bean {
             urlMap.put("text", e.text());
             objects.add(urlMap);
         }
-        Iterator<Map<String, String>> iterator = objects.iterator();
-        while (iterator.hasNext()) {
-            Map<String, String> map = iterator.next();
+        for (Map<String, String> object : objects) {
             BookList bookList = new BookList();
             bookList.setBookId(bookId);
-            bookList.setName(map.get("text"));
-            String href = map.get("href");
+            bookList.setName(object.get("text"));
+            String href = object.get("href");
             bookList.setReadUrl(href);
-            bookList.setSort(Integer.parseInt(String.valueOf(map.get("sort"))));
+            bookList.setSort(Integer.parseInt(String.valueOf(object.get("sort"))));
             bookLists.add(bookList);
         }
+
         return bookLists;
     }
 
@@ -163,9 +162,10 @@ public class Doc2Bean {
 //        String base = "https://www.ximalaya.com/search/十宗罪";
 //        String base = "https://www.ximalaya.com/youshengshu/24495649/297822813";
 //        String base = "https://m.ximalaya.com/youshengshu/24495649/297822813";
-        String base = "https://www.biqudu.net";
-        String path = "/130_130297/";
-        Document document = HttpUtils.doGetReptile(base, path);
+//        String base = "https://www.biqudu.net";
+        String base = "https://www.kanman.com/8687/01.html";
+//        String path = "/130_130297/";
+        Document document = HttpUtils.doGetReptile(base, null);
         System.out.println(document.toString());
 //        List<Books> books = new ArrayList<>();
 //        Doc2Bean.doc2BookList(document, books);
